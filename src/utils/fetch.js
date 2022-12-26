@@ -1,8 +1,8 @@
+import axios from "axios";
+
 import { BASE_URL } from "./constants";
 
 export const fetchFromAPI = async (url) => {
-  const axios = await import("axios");
-
   const options = {
     params: { maxResults: "50" },
     headers: {
