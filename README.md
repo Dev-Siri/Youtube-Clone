@@ -1,4 +1,4 @@
-# Youtube Clone
+# YouTube Clone
 
 This project uses the Rapid API YouTube v3 API and React to make a YouTube UI clone with actual watchable videos.
 
