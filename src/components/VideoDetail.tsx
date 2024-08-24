@@ -1,33 +1,38 @@
-import { useState, useEffect } from "react";
-
-import { Link, useParams } from "react-router-dom";
-import ReactPlayer from "react-player";
-import Typography from "@mui/material/Typography";
+import CheckCircle from "@mui/icons-material/CheckCircle";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import CheckCircle from "@mui/icons-material/CheckCircle";
+import Typography from "@mui/material/Typography";
+import { useEffect, useState } from "react";
+import ReactPlayer from "react-player";
+import { Link, useParams } from "react-router-dom";
+
+import type { MultiVideoResult, VideoDetails } from "../types";
+
+import { fetchFromAPI } from "../utils/fetch";
+
 import Videos from "./Videos";
 
-const VideoDetail = () => {
+export default function VideoDetail() {
   const { id } = useParams();
-  const [videos, setVideos] = useState([]);
-  const [videoDetail, setVideoDetail] = useState(null);
+  const [videos, setVideos] = useState<MultiVideoResult["items"]>([]);
+  const [videoDetail, setVideoDetail] = useState<
+    VideoDetails["items"][number] | null
+  >(null);
 
   useEffect(() => {
-    const fetchDetails = async () => {
-      const { fetchFromAPI } = await import("../utils/fetch");
-
-      const fetchedVideoDetails = await fetchFromAPI(
-        `videos?part=snippet,statistics&id=${id}`
+    async function fetchDetails() {
+      const fetchedVideoDetails = await fetchFromAPI<VideoDetails>(
+        `videos?part=snippet,statistics&id=${id}`,
       );
+
       setVideoDetail(fetchedVideoDetails?.items[0]);
 
-      const fetchedVideos = await fetchFromAPI(
-        `search?part=snippet&relatedToVideoId=${id}&type=video`
+      const fetchedVideos = await fetchFromAPI<MultiVideoResult>(
+        `search?part=snippet&relatedToVideoId=${id}&type=video`,
       );
 
-      setVideos(fetchedVideos);
-    };
+      setVideos(fetchedVideos.items);
+    }
 
     fetchDetails();
   }, [id]);
@@ -62,10 +67,7 @@ const VideoDetail = () => {
               }}
             >
               <Link to={`/channel/${channelId}`}>
-                <Typography
-                  variant={{ sm: "subtitle1", md: "h6" }}
-                  color="#fff"
-                >
+                <Typography sx={{ sm: "subtitle1", md: "h6" }} color="#fff">
                   {channelTitle}
                   <CheckCircle
                     sx={{ fontSize: "12px", color: "gray", ml: "5px" }}
@@ -94,6 +96,4 @@ const VideoDetail = () => {
       </Stack>
     </Box>
   );
-};
-
-export default VideoDetail;
+}

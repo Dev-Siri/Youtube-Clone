@@ -1,15 +1,14 @@
-import { useState } from "react";
+import SearchIcon from "@mui/icons-material/Search";
+import IconButton from "@mui/material/IconButton";
+import Paper from "@mui/material/Paper";
+import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
-import SearchIcon from "@mui/icons-material/Search";
-
-const SearchBar = () => {
+export default function SearchBar() {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!searchTerm) return;
@@ -35,13 +34,11 @@ const SearchBar = () => {
         className="search-bar"
         placeholder="Search..."
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        onChange={e => setSearchTerm(e.target.value)}
       />
       <IconButton type="submit" sx={{ p: "10px", color: "red" }}>
         <SearchIcon />
       </IconButton>
     </Paper>
   );
-};
-
-export default SearchBar;
+}

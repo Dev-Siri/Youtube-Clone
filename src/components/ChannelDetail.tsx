@@ -1,24 +1,28 @@
-import { useState, useEffect } from "react";
+import Box from "@mui/material/Box";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import Box from "@mui/material/Box";
-import Videos from "./Videos";
-import ChannelCard from "./ChannelCard";
+import type { ChannelDetails, MultiVideoResult } from "../types";
 
-const ChannelDetail = () => {
+import { fetchFromAPI } from "../utils/fetch";
+
+import ChannelCard from "./ChannelCard";
+import Videos from "./Videos";
+
+export default function ChannelDetail() {
   const { id } = useParams();
-  const [channelDetail, setChannelDetail] = useState(null);
-  const [videos, setVideos] = useState([]);
+  const [channelDetail, setChannelDetail] = useState<
+    ChannelDetails["items"][number] | null
+  >(null);
+  const [videos, setVideos] = useState<MultiVideoResult["items"]>([]);
 
   useEffect(() => {
     const fetchDetails = async () => {
-      const { fetchFromAPI } = await import("../utils/fetch");
-
-      const fetchedChannelDetails = await fetchFromAPI(
-        `channels?part=snippet&id=${id}`
+      const fetchedChannelDetails = await fetchFromAPI<ChannelDetails>(
+        `channels?part=snippet&id=${id}`,
       );
-      const fetchedChannelVideos = await fetchFromAPI(
-        `search?channelId=${id}&part=snippet&order=date`
+      const fetchedChannelVideos = await fetchFromAPI<MultiVideoResult>(
+        `search?channelId=${id}&part=snippet&order=date`,
       );
 
       setChannelDetail(fetchedChannelDetails?.items[0]);
@@ -47,6 +51,4 @@ const ChannelDetail = () => {
       </Box>
     </Box>
   );
-};
-
-export default ChannelDetail;
+}

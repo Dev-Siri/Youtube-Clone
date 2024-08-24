@@ -1,30 +1,29 @@
 # Youtube Clone
 
-This is a project that uses the Rapid API Youtube v3 API to get videos from youtube and React.js to make the UI of the website.
+This project uses the Rapid API YouTube v3 API and React to make a YouTube UI clone with actual watchable videos.
 
 ## Getting started
 
 **To run the project locally**
 
-- Clone the project locally
+- Clone the project
 
 ```sh
-git clone https://github.com/Dev-Siri/Youtube-Clone.git
+$ git clone https://github.com/Dev-Siri/Youtube-Clone.git
 ```
 
-- Then you can run:
+- Install dependencies:
 
 ```sh
-# To run the development server or you can run:
-npm start
+$ bun i
+```
 
-# If you want to use a production build, run:
-npm run build
+- Run the project:
 
-# And to serve the production build locally, use serve:
-npx serve -s build
+```sh
+$ bun dev
 ```
 
 ## Deployment
 
-The website is currently deployed on the internet using Netlify [HERE](https://siri-youtube-app.netlify.app)
+The project is deployed using Netlify on [siri-youtube-app.netlify.app](https://siri-youtube-app.netlify.app)

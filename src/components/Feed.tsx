@@ -1,20 +1,23 @@
-import { useState, useEffect, Suspense } from "react";
-
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import { Suspense, useEffect, useState } from "react";
+
+import type { MultiVideoResult } from "../types";
+import type { Category } from "../utils/constants";
+
 import Sidebar from "./Sidebar";
 import Videos from "./Videos";
 
-const Feed = () => {
-  const [selectedCategory, setSelectedCategory] = useState("New");
-  const [videos, setVideos] = useState([]);
+export default function Feed() {
+  const [selectedCategory, setSelectedCategory] = useState<Category>("New");
+  const [videos, setVideos] = useState<MultiVideoResult["items"]>([]);
 
   useEffect(() => {
-    const fetchVideos = async (a) => {
+    const fetchVideos = async () => {
       const { fetchFromAPI } = await import("../utils/fetch");
-      const fetchedVideos = await fetchFromAPI(
-        `search?part=snippet&q=${selectedCategory}`
+      const fetchedVideos = await fetchFromAPI<MultiVideoResult>(
+        `search?part=snippet&q=${selectedCategory}`,
       );
 
       setVideos(fetchedVideos.items);
@@ -68,6 +71,4 @@ const Feed = () => {
       </Stack>
     </Suspense>
   );
-};
-
-export default Feed;
+}

@@ -1,19 +1,22 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
+import type { MultiVideoResult } from "../types";
+
+import { fetchFromAPI } from "../utils/fetch";
+
 import Videos from "./Videos";
 
-const SearchFeed = () => {
-  const [videos, setVideos] = useState([]);
+export default function SearchFeed() {
+  const [videos, setVideos] = useState<MultiVideoResult["items"]>([]);
   const { searchTerm } = useParams();
 
   useEffect(() => {
     const fetchVideosBySearchTerm = async () => {
-      const { fetchFromAPI } = await import("../utils/fetch");
-      const fetchedVideos = await fetchFromAPI(
-        `search?part=snippet&q=${searchTerm}`
+      const fetchedVideos = await fetchFromAPI<MultiVideoResult>(
+        `search?part=snippet&q=${searchTerm}`,
       );
 
       setVideos(fetchedVideos.items);
@@ -44,6 +47,4 @@ const SearchFeed = () => {
       <Videos videos={videos} />
     </Box>
   );
-};
-
-export default SearchFeed;
+}
